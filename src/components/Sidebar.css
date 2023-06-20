@@ -37,6 +37,10 @@ button {
   background: #dcd4d4;
 } 
 
+.app-sidebar-note.acitve {
+  background: #dcd4d4;
+} 
+
 .sidebar-note-title {
   display: flex;
   justify-content: space-between;
