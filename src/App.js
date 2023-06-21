@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 import "./index.css";
 import Sidebar from "./components/Sidebar";
+import Main from "./components/Main";
 import uuid from "react-uuid";
 
 function App() {
@@ -28,6 +29,10 @@ function App() {
     setNotes(filterNotes);
   }
 
+  const getActiveNote = () => {
+    return notes.find((note) => note.id === activeNote)
+  }
+
   return (
     <div className="App">
       <Sidebar
@@ -37,6 +42,8 @@ function App() {
         activeNote={activeNote}
         setActiveNote={setActiveNote}
       />
+
+      <Main activeNote={getActiveNote()} />
     </div>
   );
 }
