@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import "./index.css";
 import Sidebar from "./components/Sidebar";
@@ -7,8 +7,13 @@ import uuid from "react-uuid";
 
 function App() {
 
-  const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState(JSON.parse(localStorage.getItem("notes")) || []);
   const [activeNote, setActiveNote] = useState(false);
+
+  useEffect(() => {
+    // ローカルストレージにノートを保存する
+    localStorage.setItem("notes", JSON.stringify(notes));
+  }, [notes]);
 
   const onAddNote = () => {
     console.log("新しく追加されました")
@@ -16,7 +21,7 @@ function App() {
     const newNote = {
       id: uuid(),
       title: "新しいノート",
-      content: "新しいノートの内容",
+      content: "",
       modDate: Date.now(),
     }
 
@@ -33,6 +38,20 @@ function App() {
     return notes.find((note) => note.id === activeNote)
   }
 
+  const onUpdateNote = (updatedNote) => {
+    // 修正された新しいノートの配列を返す
+    const updatedNotesArry = notes.map((note) => {
+      if (note.id === updatedNote.id) {
+        return updatedNote;
+      } else {
+        return note;
+      }
+    });
+
+    setNotes(updatedNotesArry)
+
+  };
+
   return (
     <div className="App">
       <Sidebar
@@ -43,7 +62,7 @@ function App() {
         setActiveNote={setActiveNote}
       />
 
-      <Main activeNote={getActiveNote()} />
+      <Main activeNote={getActiveNote()} onUpdateNote={onUpdateNote} />
     </div>
   );
 }
